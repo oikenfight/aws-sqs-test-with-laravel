@@ -18,12 +18,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'sqs_test'], function () {
-    Route::get('send', [
+    Route::post('send', [
         'uses' => 'Api\SqsController@send',
         'as' => 'api.sqs_test.send',
     ]);
     Route::get('get', [
         'uses' => 'Api\SqsController@get',
         'as' => 'api.sqs_test.get',
+    ]);
+    Route::delete('delete', [
+        'uses' => 'Api\SqsController@delete',
+        'as' => 'api.sqs_test.delete',
     ]);
 });
