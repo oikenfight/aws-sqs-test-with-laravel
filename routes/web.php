@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/sqs_test', [
+    'uses' => 'SqsController@index',
+    'as' => 'sqs.index',
+]);
