@@ -71,7 +71,8 @@
                     message: ''
                 },
                 queues: [],
-                getRequestCount: 0,
+                queuesBodies: [],
+                requestCount: 0,
                 running: false,
             }
         },
@@ -84,22 +85,31 @@
             send () {
                 axios.post('/api/sqs_test/send', this.form)
                     .then(response => {
+                        console.log('send: ' + this.form.message + ', response: ')
                         console.log(response)
+                        this.form.message = ''
                 })
             },
             countUp () {
-                this.getRequestCount++
+                this.requestCount++
             },
             startBatch () {
                 this.running = true
                 let batch = setInterval(() => {
                     this.countUp()
+                    console.log(this.requestCount)
                     axios.get('api/sqs_test/get')
                     .then(response => {
-                        Array.prototype.push.apply(this.queues, response.data.messages)
-                        console.log(this.queues)
+                        console.log(response.data.messages)
+                        response.data.messages.forEach((val, index) => {
+                            if (this.queuesBodies.indexOf(val.Body) === -1) {
+                                this.queues.push(val)
+                                this.queuesBodies.push(val.Body)
+                                console.log(this.queues)
+                                console.log('pushed: ' + val)
+                            }
+                        })
                     })
-                    console.log(this.getRequestCount)
                     if (!this.running) {
                         clearInterval(batch)
                     }
@@ -107,14 +117,16 @@
             },
             stopBatch () {
                 this.running = false
+                this.requestCount = 0
             },
             deleteQueue (queue) {
                 axios.delete('api/sqs_test/delete', {data: queue})
                     .then(response => {
                         console.log(response)
-                        this.queues.some((val, i) => {
+                        this.queues.forEach((val, i) => {
                             if (queue === val) {
                                 this.queues.splice(i, 1)
+                                this.queuesBodies.splice(i, 1)
                             }
                         })
                 })
