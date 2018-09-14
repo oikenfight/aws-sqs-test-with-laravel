@@ -64,8 +64,12 @@ final class SqsController extends Controller
         }
 
         \Log::debug('~~~~ get ~~~~~~~~~~~~~~~~~~~~~~~~~');
-        \Log::debug($messages);
-        \Log::debug('~~~~ get ~~~~~~~~~~~~~~~~~~~~~~~~~');
+        foreach ($messages as $message) {
+            \Log::debug('-----------------');
+            \Log::debug("message:" . $message['Body']);
+            \Log::debug("ReceiptHandle:" . $message['ReceiptHandle']);
+        }
+        \Log::debug('');
 
         return response()->json([
             'result' => 'ok',
