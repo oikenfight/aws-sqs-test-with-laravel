@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
-use App\Service\SqsDelete;
-use App\Service\SqsGet;
-use App\Service\SqsSend;
+use App\Service\Sqs\SqsDelete;
+use App\Service\Sqs\SqsGet;
+use App\Service\Sqs\SqsSend;
 use Aws\Exception\AwsException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
