@@ -23,4 +23,6 @@ return [
     ],
     'region' => env('AWS_REGION'),
     'version' => 'latest',
+    'sns_target_arn' => env('AWS_SNS_TARGET_ARN'),
+    'sqs_url' => env('AWS_SQS_URL'),
 ];

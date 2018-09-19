@@ -1,17 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Service\Sqs;
-
-use Aws\Exception\AwsException;
-use AWS;
-use Aws\Sqs\SqsClient;
+namespace App\Service\Demo\AwsSqs;
 
 /**
  * Class SqsDelete
  * @package App\Service
  */
-class SqsDelete extends Sqs
+class DeleteAwsSqs extends AwsSqs
 {
     public function __invoke(array $queue)
     {

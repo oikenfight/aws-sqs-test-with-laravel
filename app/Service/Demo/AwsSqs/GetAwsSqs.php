@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Service\Sqs;
+namespace App\Service\Demo\AwsSqs;
 
-use Aws\Exception\AwsException;
-use AWS;
-
-class SqsGet extends Sqs
+/**
+ * Class AwsSqsGet
+ * @package App\Service\Sqs
+ */
+class GetAwsSqs extends AwsSqs
 {
     public function __invoke()
     {

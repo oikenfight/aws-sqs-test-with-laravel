@@ -26,7 +26,7 @@ class SqsSend extends Sqs
                 ]
             ],
             'MessageBody' => $message,
-            'QueueUrl' => self::QUEUE_URL,
+            'QueueUrl' => config('aws.sqs_url'),
         ];
 
         $result = $this->client->sendMessage($params);

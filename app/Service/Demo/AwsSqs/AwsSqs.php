@@ -1,12 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Service\Sqs;
+namespace App\Service\Demo\AwsSqs;
 
 use Aws\Sqs\SqsClient;
 use AWS;
+use Illuminate\Support\Facades\App;
 
-class Sqs
+/**
+ * Class AwsSqs
+ * @package App\Service\Demo\AwsSqs
+ */
+class AwsSqs
 {
     /**
      * @var SqsClient
@@ -18,6 +23,6 @@ class Sqs
      */
     public function __construct()
     {
-        $this->client = AWS::createClient('sqs');
+        $this->client = App::make('aws')->createClient('sqs');
     }
 }

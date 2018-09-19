@@ -57,15 +57,15 @@ Route::group(['prefix' => 'demo'], function () {
 
     // queue manager
     Route::get('queue_manager/get', [
-        'uses' => 'Api\Demo\QueneManagerController@get',
+        'uses' => 'Api\Demo\QueueManagerController@get',
         'as' => 'api.demo.queue_manager.get',
     ]);
     Route::delete('queue_manager/destroy', [
-        'uses' => 'Api\Demo\QueneManagerController@destroy',
+        'uses' => 'Api\Demo\QueueManagerController@destroy',
         'as' => 'api.demo.queue_manager.destroy',
     ]);
     Route::post('queue_manager/send', [
-        'uses' => 'Api\Demo\QueneManagerController@send',
+        'uses' => 'Api\Demo\QueueManagerController@send',
         'as' => 'api.demo.queue_manager.send',
     ]);
 
