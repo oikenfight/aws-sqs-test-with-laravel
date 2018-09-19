@@ -19,3 +19,8 @@ Route::get('/sqs_test', [
     'uses' => 'SqsController@index',
     'as' => 'sqs.index',
 ]);
+
+Route::get('/demo', [
+    'uses' => 'DemoController@index',
+    'as' => 'demo.index',
+]);
