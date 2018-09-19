@@ -15,8 +15,14 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+// Test App
 Vue.component('sqs-test-component', require('./components/SqsTestComponent.vue'));
-
 const app = new Vue({
     el: '#app',
+});
+
+// Demo App
+Vue.component('demo-app-component', require('./components/Demo/Index'));
+const demoApp = new Vue({
+    el: '#demo-app',
 });
