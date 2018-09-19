@@ -23,5 +23,5 @@ return [
     ],
     'region' => env('AWS_REGION'),
     'version' => 'latest',
-    'snsTargetArn' => env('AWS_SNS_TARGET_ARN'),
+    'sns_target_arn' => env('AWS_SNS_TARGET_ARN'),
 ];

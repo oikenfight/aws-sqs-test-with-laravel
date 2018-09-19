@@ -16,7 +16,7 @@ class SendAwsSns extends AwsSns
     public function __invoke($phoneNumber, $message)
     {
         $params = [
-            'TargetArn' => config('aws.snsTargetArn'),
+            'TargetArn' => config('aws.sns_target_arn'),
             'Message' => $message,
         ];
 
