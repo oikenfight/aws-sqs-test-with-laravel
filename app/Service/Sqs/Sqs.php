@@ -8,8 +8,6 @@ use AWS;
 
 class Sqs
 {
-    const QUEUE_URL = 'https://sqs.ap-northeast-1.amazonaws.com/269017295587/sqs_test';
-
     /**
      * @var SqsClient
      */

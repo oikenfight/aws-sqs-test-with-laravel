@@ -17,7 +17,7 @@ class SqsDelete extends Sqs
     {
         //受け取って処理が終わったら削除する
         $this->client->deleteMessage([
-            'QueueUrl' => self::QUEUE_URL,
+            'QueueUrl' => config('aws.sqs_url'),
             'ReceiptHandle' => $queue['ReceiptHandle'],
         ]);
 

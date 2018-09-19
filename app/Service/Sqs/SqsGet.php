@@ -15,7 +15,7 @@ class SqsGet extends Sqs
             'AttributeNames' => ['All'],
             'MessageAttributeNames' => ['All'],
             'MaxNumberOfMessages' => 10,
-            'QueueUrl' => self::QUEUE_URL,
+            'QueueUrl' => config('aws.sqs_url'),
             'WaitTimeSeconds' => 10,
             'VisibilityTimeout' => 30,
         ];
