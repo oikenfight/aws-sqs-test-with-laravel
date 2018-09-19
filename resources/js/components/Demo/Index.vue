@@ -1,12 +1,16 @@
 <template>
     <div class="container">
-        This is Demo App Index component.
+        <front-app-component></front-app-component>
     </div>
 </template>
 
 <script>
+    import FrontAppComponent from './FrontAppComponent'
+
     export default {
-        name: 'Index',
+        components: {
+            'front-app-component': FrontAppComponent,
+        }
     }
 </script>
 
