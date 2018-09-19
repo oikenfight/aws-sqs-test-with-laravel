@@ -3,12 +3,6 @@ declare(strict_types=1);
 
 namespace App\Service\Demo\AwsSns;
 
-use Aws\AwsClient;
-use Aws\Exception\AwsException;
-use Aws\Sns\SnsClient;
-use Illuminate\Support\Facades\App;
-use AWS;
-
 /**
  * Class AwsSnsSend
  * @package App\Service\Demo\AwsSns
@@ -22,8 +16,8 @@ class SendAwsSns extends AwsSns
     public function __invoke($phoneNumber, $message)
     {
         $params = [
+            'TargetArn' => config('aws.snsTargetArn'),
             'Message' => $message,
-            'PhoneNumber' => $phoneNumber,
         ];
 
         $result = $this->client->publish($params);
