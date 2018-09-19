@@ -83,7 +83,8 @@
         },
         methods: {
             send () {
-                axios.post('/api/sqs_test/send', this.form)
+                // axios.post('/api/sqs_test/send', this.form)
+                axios.post('/api/sns_test/send', this.form)
                     .then(response => {
                         console.log('send: ' + this.form.message + ', response: ')
                         console.log(response)

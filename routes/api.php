@@ -31,3 +31,18 @@ Route::group(['prefix' => 'sqs_test'], function () {
         'as' => 'api.sqs_test.delete',
     ]);
 });
+
+Route::group(['prefix' => 'sns_test'], function () {
+    Route::post('send', [
+        'uses' => 'Api\SqsController@send',
+        'as' => 'api.sns_test.send',
+    ]);
+    Route::get('get', [
+        'uses' => 'Api\SqsController@get',
+        'as' => 'api.sns_test.get',
+    ]);
+    Route::delete('delete', [
+        'uses' => 'Api\SqsController@delete',
+        'as' => 'api.sns_test.delete',
+    ]);
+});
