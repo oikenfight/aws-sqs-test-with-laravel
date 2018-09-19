@@ -17,7 +17,10 @@ class SendAwsSns extends AwsSns
     {
         $params = [
             'TargetArn' => config('aws.sns_target_arn'),
-            'Message' => $message,
+            'Message' => json_encode([
+                'body' => $message,
+                'device' => $phoneNumber,
+            ])
         ];
 
         $result = $this->client->publish($params);
