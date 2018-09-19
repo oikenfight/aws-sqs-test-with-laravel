@@ -46,3 +46,56 @@ Route::group(['prefix' => 'sns_test'], function () {
         'as' => 'api.sns_test.delete',
     ]);
 });
+
+// demo
+Route::group(['prefix' => 'demo'], function () {
+    // front
+    Route::post('front/send', [
+        'uses' => 'Api\Demo\FrontController@send',
+        'as' => 'demo.api.front.send',
+    ]);
+
+    // queue manager
+    Route::get('queue_manager/get', [
+        'uses' => 'Api\Demo\QueneManagerController@get',
+        'as' => 'api.demo.queue_manager.get',
+    ]);
+    Route::delete('queue_manager/destroy', [
+        'uses' => 'Api\Demo\QueneManagerController@destroy',
+        'as' => 'api.demo.queue_manager.destroy',
+    ]);
+    Route::post('queue_manager/send', [
+        'uses' => 'Api\Demo\QueneManagerController@send',
+        'as' => 'api.demo.queue_manager.send',
+    ]);
+
+    // backendA
+    Route::get('backendA', [
+        'uses' => 'Api\Demo\BackendAController@index',
+        'as' => 'api.demo.backend_a.index',
+    ]);
+    Route::delete('backendA/delete', [
+        'uses' => 'Api\Demo\BackendAController@delete',
+        'as' => 'api.demo.backend_a.delete',
+    ]);
+
+    // backendB
+    Route::get('backendB', [
+        'uses' => 'Api\Demo\BackendBController@index',
+        'as' => 'api.demo.backend_b.index',
+    ]);
+    Route::delete('backendB/delete', [
+        'uses' => 'Api\Demo\BackendBController@delete',
+        'as' => 'api.demo.backend_b.delete',
+    ]);
+
+    // backendC
+    Route::get('backendC', [
+        'uses' => 'Api\Demo\BackendCController@index',
+        'as' => 'api.demo.backend_c.index',
+    ]);
+    Route::delete('backendC/delete', [
+        'uses' => 'Api\Demo\BackendCController@delete',
+        'as' => 'api.demo.backend_c.delete',
+    ]);
+});
