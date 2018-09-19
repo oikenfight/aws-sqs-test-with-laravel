@@ -21,12 +21,7 @@ class SendAwsSns extends AwsSns
      */
     public function __invoke($phoneNumber, $message)
     {
-        \Log::debug($phoneNumber);
-        \Log::debug($message);
-
         $params = [
-            // 'MessageAttributes' => [],
-            // 'MessageBody' => $message,
             'Message' => $message,
             'PhoneNumber' => $phoneNumber,
         ];
