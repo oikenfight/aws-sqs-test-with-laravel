@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-12" style="padding-top: 40px;">
             <div class="card card-default">
-                <div class="card-header">Send SQS (Front API Server)</div>
+                <div class="card-header">Front API Server (Create Message by SNS)</div>
 
                 <div class="card-body">
                     <div class="form">
