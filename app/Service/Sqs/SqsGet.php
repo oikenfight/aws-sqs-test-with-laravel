@@ -16,8 +16,8 @@ class SqsGet extends Sqs
             'MessageAttributeNames' => ['All'],
             'MaxNumberOfMessages' => 10,
             'QueueUrl' => self::QUEUE_URL,
-            'WaitTimeSeconds' => 0,
-            'VisibilityTimeout' => 60,
+            'WaitTimeSeconds' => 10,
+            'VisibilityTimeout' => 30,
         ];
 
         $result = $this->client->receiveMessage($receive);
