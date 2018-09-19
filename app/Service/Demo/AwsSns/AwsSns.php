@@ -19,7 +19,6 @@ class AwsSns
      */
     public function __construct()
     {
-        // $this->client = AWS::createClient('sns');
         $this->client = App::make('aws')->createClient('sns');
     }
 }
