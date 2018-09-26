@@ -19,9 +19,11 @@
                                 <div class="card-body">
                                     <ul class="list-group">
                                         <li class="list-group-item" :class="{disabled: queue.expired_time <= 0}" v-for="queue in queues">
+                                            <div v-if="queue.expired_time <= 0" class="row">
+                                                <span class="float-right badge badge-danger">requested destroy</span>
+                                            </div>
                                             <div class="float-right">
-                                                expired: <span class="badge badge-light">{{ queue.expired_time }}</span><br/>
-                                                <span v-if="queue.expired_time <= 0" class="badge badge-danger">requested destroy</span>
+                                                expired: <span class="badge badge-light">{{ queue.expired_time }}</span>
                                             </div>
                                             <div class="float-left">
                                                 <p class="card-text">
@@ -57,12 +59,16 @@
         mounted () {
             setInterval(() => {
                 // 期限切れ Queue を削除
-                Object.keys(this.backendQueues).forEach((val) => {
-                    if (this.backendQueues[val].length > 0) {
-                        Object.keys(this.backendQueues[val]).forEach((queue) => {
-                            if (queue.expired_time <= 0) {
-                                console.log(queue.device + ': ' + queue.expired_time)
-                                // TODO: destroy this queue
+                Object.keys(this.backendQueues).forEach((target) => {
+                    if (this.backendQueues[target].length > 0) {
+                        this.backendQueues[target].forEach((queue) => {
+                            if (queue.expired_time === 0) {
+                                // request to destroy this queue
+                                axios.delete('api/demo/queue_manager/destroy', {data: {queue: queue}}).then((response) => {
+                                    console.log(queue.device + 'was requested to delete')
+                                })
+                            } else if (queue.expired_time < 0) {
+                                console.log(queue.device + 'has been requested to delete')
                             }
                         })
                     }
