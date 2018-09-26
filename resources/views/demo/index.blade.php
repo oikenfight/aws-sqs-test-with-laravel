@@ -16,7 +16,7 @@
 @section('content')
     <div>
         <div id="demo-app">
-            <demo-app-component></demo-app-component>
+            {{--<demo-app-component></demo-app-component>--}}
         </div>
     </div>
 @endsection
