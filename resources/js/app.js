@@ -7,7 +7,7 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+// window.Vue = require('vue');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -21,8 +21,15 @@ const app = new Vue({
     el: '#app',
 });
 
-// Demo App
-Vue.component('demo-app-component', require('./components/Demo/Index'));
-const demoApp = new Vue({
-    el: '#demo-app',
-});
+// // Demo App
+// Vue.component('demo-app-component', require('./components/Demo/Index'));
+// const demoApp = new Vue({
+//     el: '#demo-app',
+// });
+
+import store from './store/index'
+
+new window.Vue({
+    store,
+    render: h => h(require('./components/Demo/Index')),
+}).$mount('#demo-app')

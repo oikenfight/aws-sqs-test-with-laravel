@@ -12,13 +12,9 @@ use App\Http\Controllers\Controller;
  */
 final class BackendBController extends Controller
 {
-    public function get()
+    public function index(Request $request)
     {
-        return 'Backend B get';
-    }
-
-    public function destroy()
-    {
-        return 'Backend B destroy';
+        \Log::debug($request->input());
+        return 'posted to Backend B';
     }
 }

@@ -64,13 +64,9 @@ Route::group(['prefix' => 'demo'], function () {
         'uses' => 'Api\Demo\QueueManagerController@destroy',
         'as' => 'api.demo.queue_manager.destroy',
     ]);
-    Route::post('queue_manager/send', [
-        'uses' => 'Api\Demo\QueueManagerController@send',
-        'as' => 'api.demo.queue_manager.send',
-    ]);
 
     // backendA
-    Route::get('backendA', [
+    Route::post('backendA', [
         'uses' => 'Api\Demo\BackendAController@index',
         'as' => 'api.demo.backend_a.index',
     ]);
@@ -80,7 +76,7 @@ Route::group(['prefix' => 'demo'], function () {
     ]);
 
     // backendB
-    Route::get('backendB', [
+    Route::post('backendB', [
         'uses' => 'Api\Demo\BackendBController@index',
         'as' => 'api.demo.backend_b.index',
     ]);
@@ -90,7 +86,7 @@ Route::group(['prefix' => 'demo'], function () {
     ]);
 
     // backendC
-    Route::get('backendC', [
+    Route::post('backendC', [
         'uses' => 'Api\Demo\BackendCController@index',
         'as' => 'api.demo.backend_c.index',
     ]);

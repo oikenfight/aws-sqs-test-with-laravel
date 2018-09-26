@@ -43,11 +43,11 @@
                         <div class="col-6">
                             <div class="card">
                                 <div class="card-header">
-                                    Queues Backends are controlling
+                                    Queues Backend Apps are controlling
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-group">
-                                        <li class="list-group-item" v-for="queue in controllingQueues">
+                                        <li class="list-group-item" v-for="queue in controlledQueues">
                                             <div class="float-right">
                                                 expired: <span class="badge badge-light">{{ queue.expired_time }}</span>
                                             </div>
@@ -74,18 +74,37 @@
         data () {
             return {
                 responseQueues: [],
-                controllingQueues: [],
+                controlledQueues: [],
                 running: false,
+                devices: {
+                    backendA: [
+                        '08000000000',
+                        '08000000001',
+                        '08000000002',
+                        '08000000003',
+                    ],
+                    backendB: [
+                        '08000000004',
+                        '08000000005',
+                        '08000000006',
+                    ],
+                    backendC: [
+                        '08000000007',
+                        '08000000008',
+                        '08000000009',
+                    ],
+                }
             }
         },
         mounted () {
             setInterval(() => {
                 // 期限切れ Queue を削除
-                Object.keys(this.controllingQueues).forEach((val, index) => {
-                    if (this.controllingQueues[index].expired_time > 0) {
-                        this.controllingQueues[index].expired_time -= 1
+                Object.keys(this.controlledQueues).forEach((val, index) => {
+                    if (this.controlledQueues[index].expired_time >= 0) {
+                        // オリジナルのこれが更新されれば、index.state.backendQueues の queue も更新される。
+                        this.controlledQueues[index].expired_time -= 1
                     } else {
-                        this.controllingQueues.splice(index, 1)
+                        this.controlledQueues.splice(index, 1)
                     }
                 })
             }, 1000)
@@ -103,17 +122,36 @@
                             return val
                         })
 
+                        console.log(this.responseQueues)
+
                         // 受け取ったデータを追加
                         this.responseQueues.forEach((val, index) => {
                             let targetDevice = val.Body.Message.device
-                            let key = this.controllingQueues.findIndex((queue) => queue.device === targetDevice)
+                            let key = this.controlledQueues.findIndex((queue) => queue.device === targetDevice)
                             if (key === -1) {
-                                this.controllingQueues.push({
+                                let queue = {
                                     'device': targetDevice,
                                     'body': val.Body.Message.body,
-                                    'receipt_handle': val.ReceiptHandle,
+                                    'ReceiptHandle': val.ReceiptHandle,
                                     'expired_time': 25,    // 処理中を想定して、データを保持する時間
-                                })
+                                }
+
+                                // 受け取った Queue が処理中でなかった場合
+                                this.controlledQueues.push(queue)
+
+                                // targetDevice（電話番号）から、適切な BackendApp にリクエスト
+                                let targetBackendApp = ''
+                                if (this.devices.backendA.indexOf(queue.device) > -1) {
+                                    targetBackendApp = 'backendA'
+                                } else if (this.devices.backendB.indexOf(queue.device) > -1) {
+                                    targetBackendApp = 'backendB'
+                                } else if (this.devices.backendC.indexOf(queue.device) > -1) {
+                                    targetBackendApp = 'backendC'
+                                }
+                                console.log(queue)
+                                console.log(queue.device)
+                                console.log('targetApp: ' + targetBackendApp)
+                                this.sendToBackendApp(targetBackendApp, queue)
                             }
                         })
                     })
@@ -126,6 +164,14 @@
             },
             stopBatch () {
                 this.running = false
+            },
+            sendToBackendApp (target, queue) {
+                axios.post('/api/demo/' + target, queue).then(response => {
+                    console.log('send to: ' + target + ', device: ' + queue.device + ', response: ')
+                    console.log(response)
+                    this.$store.dispatch('pushToBackendQueues', {target: target, queue: queue})
+                })
+                // 本来なら vue でやり取りする必要は無いけど、可視化するため。
             },
         },
     }

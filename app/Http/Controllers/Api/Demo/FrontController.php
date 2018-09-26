@@ -23,8 +23,6 @@ final class FrontController extends Controller
     {
         $input = $request->input();
 
-        \Log::debug($input);
-
         try{
             $sendAwsSns($input['phone_number'], $input['message']);
         } catch(AwsException $e){
