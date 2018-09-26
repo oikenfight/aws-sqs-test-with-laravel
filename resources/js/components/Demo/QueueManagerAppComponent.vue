@@ -132,7 +132,7 @@
                                 let queue = {
                                     'device': targetDevice,
                                     'body': val.Body.Message.body,
-                                    'receipt_handle': val.ReceiptHandle,
+                                    'ReceiptHandle': val.ReceiptHandle,
                                     'expired_time': 25,    // 処理中を想定して、データを保持する時間
                                 }
 

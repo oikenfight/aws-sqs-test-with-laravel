@@ -64,10 +64,6 @@ Route::group(['prefix' => 'demo'], function () {
         'uses' => 'Api\Demo\QueueManagerController@destroy',
         'as' => 'api.demo.queue_manager.destroy',
     ]);
-    Route::post('queue_manager/send', [
-        'uses' => 'Api\Demo\QueueManagerController@send',
-        'as' => 'api.demo.queue_manager.send',
-    ]);
 
     // backendA
     Route::post('backendA', [
