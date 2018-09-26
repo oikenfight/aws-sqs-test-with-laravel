@@ -70,7 +70,7 @@ Route::group(['prefix' => 'demo'], function () {
     ]);
 
     // backendA
-    Route::get('backendA', [
+    Route::post('backendA', [
         'uses' => 'Api\Demo\BackendAController@index',
         'as' => 'api.demo.backend_a.index',
     ]);
@@ -80,7 +80,7 @@ Route::group(['prefix' => 'demo'], function () {
     ]);
 
     // backendB
-    Route::get('backendB', [
+    Route::post('backendB', [
         'uses' => 'Api\Demo\BackendBController@index',
         'as' => 'api.demo.backend_b.index',
     ]);
@@ -90,7 +90,7 @@ Route::group(['prefix' => 'demo'], function () {
     ]);
 
     // backendC
-    Route::get('backendC', [
+    Route::post('backendC', [
         'uses' => 'Api\Demo\BackendCController@index',
         'as' => 'api.demo.backend_c.index',
     ]);
