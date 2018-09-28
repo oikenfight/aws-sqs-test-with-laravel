@@ -28,14 +28,12 @@
                                 <div class="card-body">
                                     <ul class="list-group">
                                         <li class="list-group-item" v-for="queue in allQueues">
-                                            <div class="float-right">
-                                                <!-- TODO: add expired_at -->
-                                                expired: <span class="badge badge-light">{{ queue.expired_time }}</span>
-                                            </div>
                                             <div class="float-left">
                                                 <p class="card-text">
                                                     device: {{ queue.device }} <br/>
-                                                    body: {{ queue.body }}
+                                                    body: {{ queue.body }} <br/>
+                                                    created_at: {{ queue.created_at }} <br/>
+                                                    received_at: {{ queue.received_at }}
                                                 </p>
                                             </div>
                                         </li>
