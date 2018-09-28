@@ -29,18 +29,17 @@
 
                                     <ul class="list-group">
                                         <li class="list-group-item" :class="{disabled: queue.expired_time <= 0}" v-for="queue in queues">
-                                            <div v-if="queue.expired_time <= 0" class="row">
-                                                <span class="float-right badge badge-danger">requested destroy</span>
-                                            </div>
-                                            <div class="float-right">
-                                                expired: <span class="badge badge-light">{{ queue.expired_time }}</span>
-                                            </div>
+                                            <!--<div class="row">-->
+                                            <!--<div class="float-right">-->
+                                            <!--</div>-->
+                                            <!--</div>-->
                                             <div class="float-left">
                                                 <p class="card-text">
                                                     device: {{ queue.device }} <br/>
                                                     body: {{ queue.body }}
                                                 </p>
                                             </div>
+                                            <button type="button" class="btn btn-sm btn-danger float-right" @click="destroy(queue)">Delete</button>
                                         </li>
                                     </ul>
                                 </div>
@@ -108,6 +107,14 @@
             stopBatch (target) {
                 // Queue Manager の継続的な処理を停止させる
                 this.statuses[target] = false
+            },
+            destroy (queue) {
+                axios.delete('api/demo/queue_manager/destroy', {data: {queue: queue}})
+                .then(response => {
+                    // parse response to json
+                    console.log(queue.device + ' is deleted')
+                    console.log(response.data)
+                });
             },
         },
     }
