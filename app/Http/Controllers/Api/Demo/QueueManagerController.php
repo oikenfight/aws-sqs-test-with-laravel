@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Demo;
 
 use App\Service\Demo\AwsSqs\DeleteAwsSqs;
 use App\Service\Demo\AwsSqs\GetAwsSqs;
+use App\Service\Demo\Redis\DeleteQueue;
 use App\Service\Demo\Redis\SetQueues;
 use Aws\Exception\AwsException;
 use Carbon\Carbon;
@@ -47,6 +48,8 @@ final class QueueManagerController extends Controller
             }
         }
 
+        // TODO: 現状では取得した Queue を全て redis に入れてるけど、
+        // ここで FronApp と連携して、実行予定の Queue のみを追加する感じにすればいけるかな。
         $setQueues($queues);
 
         return response()->json([
@@ -55,16 +58,23 @@ final class QueueManagerController extends Controller
         ], 200);
     }
 
-    public function destroy(Request $request, DeleteAwsSqs $deleteAwsSqs)
+    /**
+     * @param Request $request
+     * @param DeleteQueue $deleteQueue
+     * @param DeleteAwsSqs $deleteAwsSqs
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(Request $request, DeleteQueue $deleteQueue, DeleteAwsSqs $deleteAwsSqs)
     {
-        $data = $request->all();
+        $queue = $request->all()['queue'];
 
         \Log::debug('=== delete ================');
-        \Log::debug($data['queue']);
+        \Log::debug($queue);
         \Log::debug('=== delete ================');
 
         try{
-            $deleteAwsSqs($data['queue']);
+            $deleteQueue($queue);
+            $deleteAwsSqs($queue);
         } catch(AwsException $e){
             return response()->json([
                 'result' => 'ng'
