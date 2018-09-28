@@ -70,19 +70,11 @@ Route::group(['prefix' => 'demo'], function () {
         'uses' => 'Api\Demo\BackendAController@index',
         'as' => 'api.demo.backend_a.index',
     ]);
-    Route::delete('backendA/delete', [
-        'uses' => 'Api\Demo\BackendAController@delete',
-        'as' => 'api.demo.backend_a.delete',
-    ]);
 
     // backendB
     Route::post('backendB', [
         'uses' => 'Api\Demo\BackendBController@index',
         'as' => 'api.demo.backend_b.index',
-    ]);
-    Route::delete('backendB/delete', [
-        'uses' => 'Api\Demo\BackendBController@delete',
-        'as' => 'api.demo.backend_b.delete',
     ]);
 
     // backendC
@@ -90,8 +82,19 @@ Route::group(['prefix' => 'demo'], function () {
         'uses' => 'Api\Demo\BackendCController@index',
         'as' => 'api.demo.backend_c.index',
     ]);
-    Route::delete('backendC/delete', [
-        'uses' => 'Api\Demo\BackendCController@delete',
-        'as' => 'api.demo.backend_c.delete',
+
+    // Redis
+    Route::get('redis/queues', [
+        'uses' => 'Api\Demo\RedisQueuesController@index',
+        'as' => 'api.demo.redis.queues.all',
     ]);
+    Route::get('redis/queues/{BackendApp}', [
+        'uses' => 'Api\Demo\RedisQueuesController@getBackendAppQueues',
+        'as' => 'api.demo.redis.queues.backend_app_queues',
+    ]);
+    Route::delete('redis/queues/{Device}', [
+        'uses' => 'Api\Demo\RedisQueuesController@destroy',
+        'as' => 'api.demo.redis.queues.destroy',
+    ]);
+
 });
