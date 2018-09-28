@@ -11,26 +11,35 @@
                     <!-- content -->
                     <div class="row">
                         <!-- Each Backend App -->
-                        <div v-for="(queues, section) in backendQueues" class="col-4">
+                        <div v-for="(queues, target) in backendQueues" class="col-4">
                             <div class="card">
                                 <div class="card-header">
-                                    Queues of {{ section }}
+                                    Queues of {{ target }}
                                 </div>
                                 <div class="card-body">
+                                    <!-- start/stop -->
+                                    <div class="row" style="padding-bottom: 20px">
+                                        <div class="col-12">
+                                            <div class="float-right">
+                                                <button class="btn btn-success" :class="{disabled: statuses[target]}" @click="startBatch(target)">Start</button>
+                                                <button class="btn btn-danger" :class="{disabled: !statuses[target]}" @click="stopBatch(target)">Stop</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <ul class="list-group">
                                         <li class="list-group-item" :class="{disabled: queue.expired_time <= 0}" v-for="queue in queues">
-                                            <div v-if="queue.expired_time <= 0" class="row">
-                                                <span class="float-right badge badge-danger">requested destroy</span>
-                                            </div>
-                                            <div class="float-right">
-                                                expired: <span class="badge badge-light">{{ queue.expired_time }}</span>
-                                            </div>
+                                            <!--<div class="row">-->
+                                            <!--<div class="float-right">-->
+                                            <!--</div>-->
+                                            <!--</div>-->
                                             <div class="float-left">
                                                 <p class="card-text">
                                                     device: {{ queue.device }} <br/>
                                                     body: {{ queue.body }}
                                                 </p>
                                             </div>
+                                            <button type="button" class="btn btn-sm btn-danger float-right" @click="destroy(queue)">Delete</button>
                                         </li>
                                     </ul>
                                 </div>
@@ -44,36 +53,69 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
+    // import { mapGetters } from 'vuex'
 
     export default {
         name: 'BackendAppAComponent',
         data () {
-            return {}
+            return {
+                names: {
+                    A: 'BackendAppA',
+                    B: 'BackendAppB',
+                    C: 'BackendAppC',
+                },
+                statuses: {
+                    A: false,
+                    B: false,
+                    C: false,
+                },
+                backendQueues: {
+                    A: [],
+                    B: [],
+                    C: [],
+                },
+                batches: {
+                    A: null,
+                    B: null,
+                    C: null,
+                }
+            }
         },
-        computed: {
-            ...mapGetters({
-                backendQueues: 'backendQueues',
-            }),
-        },
-        mounted () {
-            setInterval(() => {
-                // 期限切れ Queue を削除
-                Object.keys(this.backendQueues).forEach((target) => {
-                    if (this.backendQueues[target].length > 0) {
-                        this.backendQueues[target].forEach((queue) => {
-                            if (queue.expired_time === 0) {
-                                // request to destroy this queue
-                                axios.delete('api/demo/queue_manager/destroy', {data: {queue: queue}}).then((response) => {
-                                    console.log(queue.device + 'was requested to delete')
-                                })
-                            } else if (queue.expired_time < 0) {
-                                console.log(queue.device + 'has been requested to delete')
-                            }
-                        })
+        methods: {
+            startBatch (target) {
+                let name = this.names[target]
+                this.statuses[target] = true
+
+                // Queue Manager の継続的な処理をスタート
+                this.batches[target] = setInterval(() => {
+                    // Web 上に可視化するために Redis からデータを取得してる。
+                    axios.get('api/demo/redis/queues/' + name)
+                    .then(response => {
+                        // parse response to json
+                        console.log(name + ' gets itself queues from redis database.')
+                        console.log(response.data.queues)
+                        this.backendQueues[target] = response.data.queues
+                    });
+
+                    // ストップボタンが押されたら Interval 停止
+                    if (!this.statuses[target]) {
+                        clearInterval(this.batches[target])
+                        this.batches[target] = null
                     }
-                })
-            }, 1000)
+                }, 3000)
+            },
+            stopBatch (target) {
+                // Queue Manager の継続的な処理を停止させる
+                this.statuses[target] = false
+            },
+            destroy (queue) {
+                axios.delete('api/demo/queue_manager/destroy', {data: {queue: queue}})
+                .then(response => {
+                    // parse response to json
+                    console.log(queue.device + ' is deleted')
+                    console.log(response.data)
+                });
+            },
         },
     }
 </script>

@@ -16,6 +16,10 @@ RUN apk --no-cache update && \
     openssl \
     nodejs-npm \
     bash \
+  && pecl install \
+    redis \
+  && docker-php-ext-enable \
+    redis \
   && docker-php-ext-install \
     curl \
     dom \

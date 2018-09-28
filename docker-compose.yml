@@ -84,3 +84,16 @@ services:
     working_dir: "/myapp"
     env_file:
       - docker/artisan/artisan.env
+  redis:
+    build:
+      context: ./
+      dockerfile: docker/redis/Dockerfile
+    ports:
+      - 6379:6379
+    env_file:
+      - docker/redis/redis.env
+    command: >
+      /bin/sh -c "envsubst < /usr/local/etc/redis/redis.conf.template > /usr/local/etc/redis/redis.conf && redis-server /usr/local/etc/redis/redis.conf"
+    logging:
+      options:
+        tag: docker.redis.{{.FullID}}
